@@ -156,7 +156,7 @@ namespace ToDo.Controllers
         {
             var task = await _context.TodoTasks
                 .Where(t => t.IsCompleted == true)
-				.OrderBy(t => t.Priority)
+				.OrderBy(t => t.CompletedAt)
 				.ToListAsync();
 			return View(task);
         }

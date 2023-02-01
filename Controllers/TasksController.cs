@@ -146,7 +146,8 @@ namespace ToDo.Controllers
                 return NotFound();
             }
             task.IsCompleted = isCompleted;
-            _context.Update(task);
+			task.CompletedAt = DateTime.Now;
+			_context.Update(task);
             await _context.SaveChangesAsync();
             return Ok();
         }

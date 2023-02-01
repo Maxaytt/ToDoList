@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<TodoTask>
 
+
 <table>
     <thead>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -34,13 +35,17 @@
         var taskId = $(checkbox).attr("data-task-id");
         var isCompleted = $(checkbox).is(":checked");
 
-        // Send a request to the server to update the task's "isCompleted" property
+        // Get the current date and time
+        var completedAt = new Date().toISOString();
+
+        // Send a request to the server to update the task's "isCompleted" and "CompletedAt" properties
         $.ajax({
             url: '/Todo/Update',
             type: 'POST',
             data: {
                 taskId: taskId,
-                isCompleted: isCompleted
+                isCompleted: isCompleted,
+                completedAt: completedAt
             },
             success: function(response) {
                 console.log("Task updated successfully");

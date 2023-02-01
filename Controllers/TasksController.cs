@@ -18,7 +18,7 @@ namespace ToDo.Controllers
         public async Task<IActionResult> Index()
         {
             var todoTasks = await _context.TodoTasks
-                .Where(t => t.IsCompleted== false)
+                .Where(t => t.IsCompleted == false)
                 .OrderBy(t => t.Priority)
                 .ToListAsync(); 
             return View(todoTasks);
@@ -151,7 +151,16 @@ namespace ToDo.Controllers
             return Ok();
         }
 
-        private bool TodoTaskExists(int id)
+        public async Task<IActionResult> Completed()
+        {
+            var task = await _context.TodoTasks
+                .Where(t => t.IsCompleted == true)
+				.OrderBy(t => t.Priority)
+				.ToListAsync();
+			return View(task);
+        }
+		
+		private bool TodoTaskExists(int id)
         {
             return _context.TodoTasks.Any(e => e.Id == id);
         }

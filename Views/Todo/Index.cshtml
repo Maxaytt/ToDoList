@@ -12,7 +12,7 @@
     <tbody>
         @foreach (var task in Model)
         {
-            <tr>
+            <tr id="task-@task.Id">
                 <td class="pl-4">
                     <input type="checkbox" name="isCompleted" data-task-id="@task.Id" value="@task.IsCompleted" @(task.IsCompleted ? "checked" : "") onclick="updateTask(this)"/>  
                 </td>
@@ -44,7 +44,9 @@
             },
             success: function(response) {
                 console.log("Task updated successfully");
-                $.get("/Todo/GetData", function(data){});
+                if(isCompleted){
+                    $("#task-" + taskId).remove();
+                }
             },
             error: function(xhr, status, error) {
                 console.log("An error occurred while updating the task");

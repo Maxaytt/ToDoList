@@ -1,0 +1,27 @@
+﻿@model IEnumerable<TodoTask>
+
+<table>
+    <thead>
+        <tr>
+            <th>Done</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td class="pl-4">
+                    <input type="checkbox" name="isCompleted" data-task-id="@task.Id" value="@task.IsCompleted" />  
+                </td>
+                <td>@task.Description</td>
+                <td>
+                    <a asp-controller="Todo" asp-action="Details" asp-route-id="@task.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

@@ -12,7 +12,7 @@ using ToDo;
 namespace TodoList.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230130194742_TodoTaskToDb")]
+    [Migration("20230203151104_TodoTaskToDb")]
     partial class TodoTaskToDb
     {
         /// <inheritdoc />
@@ -37,6 +37,9 @@ namespace TodoList.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Deadline")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")

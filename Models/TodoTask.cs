@@ -14,5 +14,7 @@ namespace ToDo.Models
         [Required]
         public DateTime CreatedAt { get; set; }
         public DateTime CompletedAt { get; set; }
+        public DateTime Deadline { get; set; }
+
     }
 }

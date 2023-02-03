@@ -6,6 +6,7 @@
         <tr>
             <th>Done</th>
             <th>Description</th>
+            <th>Time left</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -17,6 +18,15 @@
                     <input type="checkbox" name="isCompleted" data-task-id="@task.Id" value="@task.IsCompleted" @(task.IsCompleted ? "checked" : "") onclick="updateTask(this)"/>  
                 </td>
                 <td>@task.Description</td>
+                
+                @if((task.Deadline - task.CreatedAt).TotalHours >= 96) {
+                    <td>@(Math.Round((task.Deadline - task.CreatedAt).TotalDays)) days</td>
+                } else if((task.Deadline - task.CreatedAt).TotalHours >= 1){
+                    <td>@(Math.Round((task.Deadline - task.CreatedAt).TotalHours)) hours</td>
+                } else {
+                    <td>@(Math.Round((task.Deadline - task.CreatedAt).TotalMinutes)) minutes</td>
+                }
+
                 <td>
                     <a asp-controller="Todo" asp-action="Details" asp-route-id="@task.Id">Details</a>
                     <a asp-controller="Todo" asp-action="Edit" asp-route-id="@task.Id">Edit</a>

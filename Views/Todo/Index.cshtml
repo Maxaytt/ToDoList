@@ -19,12 +19,12 @@
                 </td>
                 <td>@task.Description</td>
                 
-                @if((task.Deadline - task.CreatedAt).TotalHours >= 96) {
-                    <td>@(Math.Round((task.Deadline - task.CreatedAt).TotalDays)) days</td>
-                } else if((task.Deadline - task.CreatedAt).TotalHours >= 1){
-                    <td>@(Math.Round((task.Deadline - task.CreatedAt).TotalHours)) hours</td>
+                @if((task.Deadline - DateTime.Now).TotalHours >= 96) {
+                    <td>@(Math.Round((task.Deadline - DateTime.Now).TotalDays)) days</td>
+                } else if((task.Deadline - DateTime.Now).TotalHours >= 1){
+                    <td>@(Math.Round((task.Deadline - DateTime.Now).TotalHours)) hours</td>
                 } else {
-                    <td>@(Math.Round((task.Deadline - task.CreatedAt).TotalMinutes)) minutes</td>
+                    <td>@(Math.Round((task.Deadline - DateTime.Now).TotalMinutes)) minutes</td>
                 }
 
                 <td>
@@ -50,8 +50,7 @@
             type: 'POST',
             data: {
                 taskId: taskId,
-                isCompleted: isCompleted,
-                completedAt: completedAt
+                isCompleted: isCompleted
             },
             success: function(response) {
                 console.log("Task updated successfully");

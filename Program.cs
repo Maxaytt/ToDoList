@@ -1,15 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using ToDo;
-using ToDo.Services;
-using ToDo.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(option => {
+        option.LoginPath = "/Access/Login";
+        option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    });
 
 var app = builder.Build();
 
@@ -26,10 +32,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Todo}/{action=Index}/{id?}");
+    pattern: "{controller=Access}/{action=Login}/{id?}");
 
 app.Run();

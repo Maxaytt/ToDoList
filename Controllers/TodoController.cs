@@ -1,27 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using ToDo.Models;
-using ToDo.Services.Interfaces;
+
 
 namespace ToDo.Controllers
 {
+    [Authorize]
     public class TodoController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public TodoController(AppDbContext context)
+        public TodoController(AppDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: TodoTasks
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var todoTasks = await _context.TodoTasks
 
-                .Where(t => t.IsCompleted == false && t.UserId == int.Parse(userId))
+            var todoTasks = await _context.TodoTasks
+                .Where(t => t.IsCompleted == false && t.UserId == userId)
                 .OrderBy(t => t.Priority)
                 .ToListAsync(); 
             return View(todoTasks);
@@ -56,7 +61,8 @@ namespace ToDo.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+                task.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
                 task.CreatedAt = DateTime.Now;
                 _context.Add(task);
                 await _context.SaveChangesAsync();

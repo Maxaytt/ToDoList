@@ -34,5 +34,12 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Index"class="btn btn-primary">Back to Tasks</a>
+    @if(Model.IsCompleted)
+    {
+        <a asp-action="Completed"class="btn btn-primary">Back to Tasks</a>
+    } else
+    {
+        <a asp-action="Index"class="btn btn-primary">Back to Tasks</a>
+    }
+
 </div>

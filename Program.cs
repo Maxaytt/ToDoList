@@ -12,11 +12,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(option => {
-        option.LoginPath = "/Access/Login";
-        option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-    });
+builder.Services.AddDefaultIdentity<IdentityUser>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 
@@ -37,8 +34,9 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Access}/{action=Login}/{id?}");
+    pattern: "{controller=Todo}/{action=Index}/{id?}");
 
 app.Run();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using ToDo.Models;
 using ToDo.Services.Interfaces;
 
@@ -17,8 +18,10 @@ namespace ToDo.Controllers
         // GET: TodoTasks
         public async Task<IActionResult> Index()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var todoTasks = await _context.TodoTasks
-                .Where(t => t.IsCompleted == false)
+
+                .Where(t => t.IsCompleted == false && t.UserId == int.Parse(userId))
                 .OrderBy(t => t.Priority)
                 .ToListAsync(); 
             return View(todoTasks);
@@ -53,6 +56,7 @@ namespace ToDo.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 task.CreatedAt = DateTime.Now;
                 _context.Add(task);
                 await _context.SaveChangesAsync();
@@ -154,8 +158,9 @@ namespace ToDo.Controllers
 
         public async Task<IActionResult> Completed()
         {
+            
             var task = await _context.TodoTasks
-                .Where(t => t.IsCompleted == true)
+                .Where(t => t.IsCompleted == true )
 				.OrderBy(t => t.CompletedAt)
 				.ToListAsync();
 			return View(task);

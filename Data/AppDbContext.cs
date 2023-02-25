@@ -11,5 +11,6 @@ namespace ToDo
 
         }
         public DbSet<TodoTask> TodoTasks { get; set; }
+        public DbSet<UserStatistic> userStatistics { get; set; }
     }
 }

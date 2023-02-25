@@ -8,6 +8,8 @@ namespace ToDo.Models
         [Key]
         public int Id { get; set; }
 
+        public string? userId { get; set; }
+
         public int TasksCount { get; set; }
 
         public int OverdueTasksCount { get; set; }

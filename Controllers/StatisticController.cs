@@ -21,11 +21,11 @@ namespace TodoList.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var todoTasks = await _context.TodoTasks
-                .Where(t => t.UserId == userId)
-                .ToListAsync();
-
-            return View(todoTasks);
+            var statistic = await _context.userStatistics
+                 .Where(s => s.userId == userId)
+                 .ToListAsync();
+                
+            return View(statistic);
         }
         
     }

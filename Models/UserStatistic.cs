@@ -8,7 +8,7 @@ namespace ToDo.Models
         [Key]
         public int Id { get; set; }
 
-        public string? userId { get; set; }
+        public string? UserId { get; set; }
 
         public int TasksCount { get; set; }
 
@@ -23,5 +23,16 @@ namespace ToDo.Models
 
         [Range(0, 100)]
         public float AvgDelayTime { get; set; }
+
+        public UserStatistic(string userId)
+        {
+            UserId = userId;
+            TasksCount = 0;
+            OverdueTasksCount = 0;
+            TimelyCompletedTasksCount = 0;
+            DeleteTasksCount = 0;
+            AvgDelayTime = 0;
+            AvgExecutionTime = 0;
+        }
     }
 }

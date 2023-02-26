@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Security.Claims;
 using ToDo.Models;
 
@@ -121,6 +122,12 @@ namespace ToDo.Controllers
         //GET: TodoTasks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var statistic = await _context.userStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
+
+            statistic.DeleteTasksCount++;
+
             if (id == null || _context.TodoTasks == null)
             {
                 return NotFound();
@@ -150,7 +157,23 @@ namespace ToDo.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(int taskId, bool isCompleted)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var task = await _context.TodoTasks.FindAsync(taskId);
+
+            var statistic = await _context.userStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
+
+            if (statistic == null)
+            {
+                return NotFound();
+            }
+
+            statistic.TasksCount++;
+            if (DateTime.Now > task.Deadline)
+                statistic.OverdueTasksCount++;
+            else
+                statistic.TimelyCompletedTasksCount++;
+
             if (task == null)
             {
                 return NotFound();
@@ -158,6 +181,7 @@ namespace ToDo.Controllers
             task.IsCompleted = isCompleted;
 			task.CompletedAt = DateTime.Now;
 			_context.Update(task);
+
             await _context.SaveChangesAsync();
             return Ok();
         }

@@ -21,29 +21,14 @@ namespace TodoList.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var statistic = await _context.userStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
+            var statistic = await _context.UserStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
 
-            //This should be in method
-            var group = _context.TodoTasks.Where(t => t.CompletedAt < t.Deadline && t.UserId == userId && t.IsCompleted == true);
-            var count = await group.CountAsync();
-
-            var fullTime = (float)group.Average(t => EF.Functions.DateDiffMinute(t.CreatedAt, t.Deadline));
-            var executionTime = (float)group.Average(t => EF.Functions.DateDiffMinute(t.CreatedAt, t.CompletedAt));
-
-            var averageExecutionTime = (executionTime / fullTime) * 100;
-            statistic.AvgExecutionTime = 100.0f - averageExecutionTime;
-
-
-
-
-
-            //var difference = (float)group.Average(t => EF.Functions.DateDiffDay(t.CompletedAt, t.Deadline));
-            //var averageExecutionTime = count == 0 ? 0 : (float)group.Average(t => EF.Functions.DateDiffDay(t.CompletedAt, t.Deadline)) / count;
-            //
-
+            statistic.SummingUp(userId, _context);
 
             return View(statistic);
         }
+
+        
         
     }
 }

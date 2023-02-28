@@ -66,6 +66,7 @@ namespace TodoList.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+            
 
             Input = new InputModel
             {

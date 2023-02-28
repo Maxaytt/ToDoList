@@ -1,35 +1,32 @@
 ﻿@model UserStatistic
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Statistics";
 }
-
-<h1>Index</h1>
-
+<h1>Statistics</h1>
 <div>
-    <h4>UserStatistic</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">Id :</dt>
-        <dd class = "col-sm-10">@Model.Id</dd>
-
-        <dt class="col-sm-2">TasksCount:</dt>
+        <dt class="col-sm-2">Completed tasks amount:</dt>
         <dd class="col-sm-10">@Model.TasksCount</dd>
 
-        <dt class="col-sm-2">OverdueTasksCount :</dt>
+        <dt class="col-sm-2">Overdue tasks :</dt>
         <dd class="col-sm-10">@Model.OverdueTasksCount</dd>
 
-        <dt class="col-sm-2">TimelyCompletedTasksCount :</dt>
+        <dt class="col-sm-2">Timely completed tasks :</dt>
         <dd class="col-sm-10">@Model.TimelyCompletedTasksCount</dd>
 
-        <dt class="col-sm-2">DeleteTasksCount :</dt>
+        <dt class="col-sm-2">Deleted tasks :</dt>
         <dd class="col-sm-10">@Model.DeleteTasksCount</dd>
+
+        <dt class="col-sm-2">Percentage timely completed tasks:</dt>
+        <dd class="col-sm-10">@Math.Round((double)(Model.TimelyCompletedTasksCount * 100/Model.TasksCount) , 2)%</dd>
         
-        <dt class="col-sm-2">AvgExecutionTime :</dt>
+        <dt class="col-sm-2">Average execution time :</dt>
         <dd class="col-sm-10">@Math.Round(Model.AvgExecutionTime, 2)%</dd>
 
-        <dt class="col-sm-2"> AvgDelayTime:</dt>
-        <dd class="col-sm-10">@Model.AvgDelayTime</dd>
+        <dt class="col-sm-2"> Average delay time:</dt>
+        <dd class="col-sm-10">@Math.Round(Model.AvgDelayTime, 2)%</dd>
     </dl>
 
 </div>

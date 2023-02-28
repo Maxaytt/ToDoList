@@ -124,7 +124,7 @@ namespace ToDo.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var statistic = await _context.userStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
+            var statistic = await _context.UserStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
 
             statistic.DeleteTasksCount++;
 
@@ -161,7 +161,7 @@ namespace ToDo.Controllers
 
             var task = await _context.TodoTasks.FindAsync(taskId);
 
-            var statistic = await _context.userStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
+            var statistic = await _context.UserStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
 
             if (statistic == null)
             {

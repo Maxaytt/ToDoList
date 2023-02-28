@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace ToDo.Models
@@ -33,6 +34,41 @@ namespace ToDo.Models
             DeleteTasksCount = 0;
             AvgDelayTime = 0;
             AvgExecutionTime = 0;
+        }
+        public async void SummingUp(string? userId, AppDbContext context)
+        {
+            this.SetDelayTime(userId, context);
+            this.SetExecutionTime(userId, context);
+
+            TasksCount = context.TodoTasks
+                .Where(t => t.IsCompleted == true && t.UserId == userId)
+                .Count();
+            OverdueTasksCount = context.TodoTasks
+                .Where(t => t.IsCompleted == true && t.UserId == userId && t.CompletedAt > t.Deadline)
+                .Count();
+            TimelyCompletedTasksCount = TasksCount - OverdueTasksCount;
+        }
+        private async void SetExecutionTime(string? userId, AppDbContext context)
+        {
+            var group = context.TodoTasks.Where(t => t.CompletedAt < t.Deadline && t.UserId == userId && t.IsCompleted == true);
+
+            var fullTime = (float)group.Average(t => EF.Functions.DateDiffMinute(t.CreatedAt, t.Deadline));
+            var resultTime = (float)group.Average(t => EF.Functions.DateDiffMinute(t.CreatedAt, t.CompletedAt));
+
+            var averageExecutionTime = 100f - (resultTime / fullTime) * 100;
+
+            AvgExecutionTime = averageExecutionTime;
+        }
+        private async void SetDelayTime(string? userId, AppDbContext context)
+        { 
+            var group1 = context.TodoTasks.Where(t => t.CompletedAt >= t.Deadline && t.UserId == userId && t.IsCompleted == true);
+
+            var fullTime1 = (float)group1.Average(t => EF.Functions.DateDiffMinute(t.CreatedAt, t.Deadline));
+            var resultTime1 = (float)group1.Average(t => EF.Functions.DateDiffMinute(t.CreatedAt, t.CompletedAt));
+
+            var averageDelayTime = (resultTime1 / fullTime1) * 100;
+
+            AvgDelayTime = averageDelayTime;
         }
     }
 }

@@ -29,6 +29,7 @@
   <ItemGroup>
     <Folder Include="Areas\Identity\Customer\" />
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\picrutes\" />
   </ItemGroup>
 
 </Project>

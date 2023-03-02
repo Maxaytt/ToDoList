@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Todo.Models;
 
 namespace ToDo.Models
 {
@@ -18,6 +19,7 @@ namespace ToDo.Models
         public DateTime CreatedAt { get; set; }
         public DateTime CompletedAt { get; set; }
         public DateTime Deadline { get; set; }
+        public TaskCategory Category { get; set; }
         
 
     }

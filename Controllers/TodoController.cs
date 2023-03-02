@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Drawing.Printing;
 using System.Security.Claims;
 using ToDo.Models;
 
@@ -22,15 +23,25 @@ namespace ToDo.Controllers
         }
 
         // GET: TodoTasks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
+            const int pageSize = 10;
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var todoTasks = await _context.TodoTasks
                 .Where(t => t.IsCompleted == false && t.UserId == userId)
                 .OrderBy(t => t.Priority)
-                .ToListAsync(); 
-            return View(todoTasks);
+                .ToListAsync();
+
+            int totalItems = todoTasks.Count();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            var tasksOnPage = todoTasks.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+
+            return View(tasksOnPage);
         }
 
         //GET: TodoTasks/Details/5

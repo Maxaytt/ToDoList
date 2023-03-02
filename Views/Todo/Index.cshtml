@@ -1,19 +1,21 @@
 ﻿@model IEnumerable<TodoTask>
 
-<table>
+<table class="table table-hover">
     <thead>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <br />
+        <br />
         <tr>
-            <th>Done</th>
-            <th>Description</th>
-            <th>Time left</th>
-            <th>Actions</th>
+            <th scope="col">Done</th>
+            <th scope="col">Description</th>
+            <th scope="col">Time left</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var task in Model)
         {
-            <tr id="task-@task.Id">
+            <tr id="task-@task.Id" class="table-primary">
                 <td class="pl-4">
                     <input type="checkbox" name="isCompleted" data-task-id="@task.Id" value="@task.IsCompleted" @(task.IsCompleted ? "checked" : "") onclick="updateTask(this)"/>  
                 </td>
@@ -36,6 +38,7 @@
         }
     </tbody>
 </table>
+
 
 <a asp-controller="Todo" asp-action="Create">Create</a>
 

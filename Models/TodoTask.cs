@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using Todo.Models;
 
 namespace ToDo.Models
 {
@@ -10,6 +9,8 @@ namespace ToDo.Models
         public int Id { get; set; }
 
         public string? UserId { get; set; }
+        public int? CategoryId { get; set; }
+        public TaskCategory? Category { get; set; }
         [Required]
         public string Description { get; set; }
         [Range(1,10)]
@@ -19,7 +20,7 @@ namespace ToDo.Models
         public DateTime CreatedAt { get; set; }
         public DateTime CompletedAt { get; set; }
         public DateTime Deadline { get; set; }
-        public TaskCategory Category { get; set; }
+
         
 
     }

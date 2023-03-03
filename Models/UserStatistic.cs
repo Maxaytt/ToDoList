@@ -37,12 +37,16 @@ namespace ToDo.Models
         }
         public async void SummingUp(string? userId, AppDbContext context)
         {
-            this.SetDelayTime(userId, context);
-            this.SetExecutionTime(userId, context);
-
             TasksCount = context.TodoTasks
                 .Where(t => t.IsCompleted == true && t.UserId == userId)
                 .Count();
+
+            if (TasksCount > 0)
+            {
+                this.SetDelayTime(userId, context);
+                this.SetExecutionTime(userId, context);
+            }
+
             OverdueTasksCount = context.TodoTasks
                 .Where(t => t.IsCompleted == true && t.UserId == userId && t.CompletedAt > t.Deadline)
                 .Count();

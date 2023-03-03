@@ -12,6 +12,7 @@ namespace ToDo
         }
         public DbSet<TodoTask> TodoTasks { get; set; }
         public DbSet<UserStatistic> UserStatistics { get; set; }
+        public DbSet<TaskCategory> TaskCategories { get; set; }
     }
 
 }

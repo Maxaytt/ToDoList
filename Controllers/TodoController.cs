@@ -75,6 +75,8 @@ namespace ToDo.Controllers
             {
                 task.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+                
+
                 task.CreatedAt = DateTime.Now;
                 _context.Add(task);
                 await _context.SaveChangesAsync();
@@ -133,11 +135,8 @@ namespace ToDo.Controllers
         //GET: TodoTasks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var statistic = await _context.UserStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
 
-            statistic.DeleteTasksCount++;
 
             if (id == null || _context.TodoTasks == null)
             {
@@ -156,8 +155,15 @@ namespace ToDo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var task = await _context.TodoTasks.FindAsync(id);
-            if(task != null)
+
+            var statistic = await _context.UserStatistics.FirstOrDefaultAsync(s => s.UserId == userId);
+
+            statistic.DeleteTasksCount++;
+
+            if (task != null)
             {
                 _context.TodoTasks.Remove(task);
                 await _context.SaveChangesAsync();

@@ -19,14 +19,20 @@
         <dt class="col-sm-2">Deleted tasks :</dt>
         <dd class="col-sm-10">@Model.DeleteTasksCount</dd>
 
-        <dt class="col-sm-2">Percentage timely completed tasks:</dt>
-        <dd class="col-sm-10">@Math.Round((double)(Model.TimelyCompletedTasksCount * 100/Model.TasksCount) , 2)%</dd>
         
-        <dt class="col-sm-2">Average execution time :</dt>
-        <dd class="col-sm-10">@Math.Round(Model.AvgExecutionTime, 2)%</dd>
+        @if(Model.TasksCount > 0)
+        {
+            <dt class="col-sm-2">Percentage timely completed tasks:</dt>
+            <dd class="col-sm-10">@Math.Round((double)(Model.TimelyCompletedTasksCount * 100/Model.TasksCount) , 2)%</dd>
+        
+            <dt class="col-sm-2">Average execution time :</dt>
+            <dd class="col-sm-10">@Math.Round(Model.AvgExecutionTime, 2)%</dd>
 
-        <dt class="col-sm-2"> Average delay time:</dt>
-        <dd class="col-sm-10">@Math.Round(Model.AvgDelayTime, 2)%</dd>
+            <dt class="col-sm-2"> Average delay time:</dt>
+            <dd class="col-sm-10">@Math.Round(Model.AvgDelayTime, 2)% </dd>
+        }
+        
+
     </dl>
 
 </div>

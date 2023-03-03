@@ -30,9 +30,16 @@
                     <td>@(Math.Round((task.Deadline - DateTime.Now).TotalMinutes)) minutes</td>
                 }
 
-                <td>
-                    @task.Category
-                </td>
+                
+                @if(task.CategoryId != null)
+                {
+                    <td>none</td>
+                }
+                else
+                {
+                    <td>@task.CategoryId</td>
+                }
+                
 
                 <td>
                     <a asp-controller="Todo" asp-action="Details" asp-route-id="@task.Id">Details</a>

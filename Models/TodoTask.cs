@@ -7,7 +7,6 @@ namespace ToDo.Models
     {
         [Key]
         public int Id { get; set; }
-
         public string? UserId { get; set; }
         public int? CategoryId { get; set; }
         public TaskCategory? Category { get; set; }
@@ -20,8 +19,6 @@ namespace ToDo.Models
         public DateTime CreatedAt { get; set; }
         public DateTime CompletedAt { get; set; }
         public DateTime Deadline { get; set; }
-
-        
 
     }
 }

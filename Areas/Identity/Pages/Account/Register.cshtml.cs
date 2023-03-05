@@ -134,7 +134,8 @@ namespace TodoList.Areas.Identity.Pages.Account
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var statistic = new UserStatistic(userId);
-                    _context.Add(statistic);
+                    _context.TaskCategories.AddRange(TaskCategory.GetDefaultObjects(userId));
+                    await _context.AddAsync(statistic);
                     await _context.SaveChangesAsync();
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",

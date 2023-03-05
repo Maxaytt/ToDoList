@@ -75,8 +75,6 @@ namespace ToDo.Controllers
             {
                 task.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                
-
                 task.CreatedAt = DateTime.Now;
                 _context.Add(task);
                 await _context.SaveChangesAsync();

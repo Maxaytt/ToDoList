@@ -201,14 +201,26 @@ namespace ToDo.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> Completed()
+        public async Task<IActionResult> Completed(int page = 1)
         {
-            
-            var task = await _context.TodoTasks
-                .Where(t => t.IsCompleted == true )
-				.OrderBy(t => t.CompletedAt)
-				.ToListAsync();
-			return View(task);
+
+            const int pageSize = 10;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var todoTasks = await _context.TodoTasks
+                .Where(t => t.IsCompleted == true && t.UserId == userId)
+                .OrderBy(t => t.Priority)
+                .ToListAsync();
+
+            int totalItems = todoTasks.Count();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            var tasksOnPage = todoTasks.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewData["CurrentPage"] = page;
+            ViewData["TotalPages"] = totalPages;
+
+            return View(tasksOnPage);
         }
 		
 		private bool TodoTaskExists(int id)

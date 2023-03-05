@@ -1,27 +1,67 @@
 ﻿@model IEnumerable<TodoTask>
 
-<table>
+<table class="table table-hover">
     <thead>
+        <br />
+        <br />
         <tr>
-            <th>Done</th>
-            <th>Description</th>
-            <th>Actions</th>
+            <th scope="col">Description</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var task in Model)
-        { 
-        <tr>
-            <td class="pl-4">
-                <input type="checkbox" name="isCompleted" data-task-id="@task.Id" value="@task.IsCompleted" />  
-            </td>
+        {
+            <tr class="table-primary">
             <td>@task.Description</td>
             <td>
                 <a asp-controller="Todo" asp-action="Details" asp-route-id="@task.Id">Details</a>
+                <a asp-controller="Todo" asp-action="Edit" asp-route-id="@task.Id">Edit</a>
+                <a asp-controller="Todo" asp-action="Delete" asp-route-id="@task.Id">Delete</a>
             </td>
         </tr>
         }
     </tbody>
 </table>
+
+<button type="button" class="btn btn-primary btn-sm">
+    <a asp-controller="Todo" asp-action="Create" style="color: white;">Create</a>
+</button>
+
+<br />
+<br />
+
+<div>
+    <ul class="pagination">
+        @if (ViewData["CurrentPage"] != null && ViewData["TotalPages"] != null)
+        {
+            int currentPage = (int)ViewData["CurrentPage"];
+            int totalPages = (int)ViewData["TotalPages"];
+
+            if (totalPages > 1)
+            {
+                // Generate the "previous" link
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Completed", new { page = currentPage - 1 })">&laquo;</a>
+                </li>
+
+                // Generate the page links
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Completed", new { page = i })">@i</a>
+                    </li>
+                }
+
+                    // Generate the "next" link
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Completed", new { page = currentPage + 1 })">&raquo;</a>
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+
 
 

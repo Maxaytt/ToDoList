@@ -1,0 +1,23 @@
+﻿@model IEnumerable<UserRating>
+
+<h1>User Rating</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>User</th>
+            <th>Task Completed Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var userRating in Model)
+        {
+            <tr>
+                <td>@(Model.ToList().IndexOf(userRating) + 1)</td>
+                <td>@userRating.UserId</td>
+                <td>@userRating.TaskCompletedCount</td>
+            </tr>
+        }
+    </tbody>
+</table>

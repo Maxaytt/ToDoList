@@ -74,5 +74,25 @@ namespace ToDo.Models
 
             AvgDelayTime = averageDelayTime;
         }
+
+        public int TotalPoints()
+        {
+            int totalScore = 100;
+
+            // Distribution of points between different metrics
+            int avgExecutionTimeScore = 25;
+            int timelyCompletedTasksScore = 25;
+            int overdueTasksScore = 25;
+            int avgDelayTimeScore = 25;
+
+            // Calculate points for each metric
+            int avgExecutionTimePoints = (int)Math.Round((1 - AvgExecutionTime / 100) * avgExecutionTimeScore);
+            int timelyCompletedTasksPoints = (int)Math.Round((double)TimelyCompletedTasksCount / TasksCount * timelyCompletedTasksScore);
+            int overdueTasksPoints = (int)Math.Round((1 - (double)OverdueTasksCount / TasksCount) * overdueTasksScore);
+            int avgDelayTimePoints = (int)Math.Round((1 - AvgDelayTime / 100) * avgDelayTimeScore);
+
+            // Sum up points and return the result
+            return avgExecutionTimePoints + timelyCompletedTasksPoints + overdueTasksPoints + avgDelayTimePoints;
+        }
     }
 }

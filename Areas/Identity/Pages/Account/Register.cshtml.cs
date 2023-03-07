@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -134,7 +135,9 @@ namespace TodoList.Areas.Identity.Pages.Account
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var statistic = new UserStatistic(userId);
-                    _context.TaskCategories.AddRange(TaskCategory.GetDefaultObjects(userId));
+
+                    await _context.AddRangeAsync(TaskCategory.GetDefaultObjects(userId));
+                    
                     await _context.AddAsync(statistic);
                     await _context.SaveChangesAsync();
                     var callbackUrl = Url.Page(

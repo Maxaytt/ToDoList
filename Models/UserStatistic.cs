@@ -19,10 +19,8 @@ namespace ToDo.Models
 
         public int DeleteTasksCount { get; set; }
 
-        [Range(0, 100)]
         public float AvgExecutionTime { get; set; }
 
-        [Range(0, 100)]
         public float AvgDelayTime { get; set; }
 
         public UserStatistic(string userId)
@@ -35,7 +33,7 @@ namespace ToDo.Models
             AvgDelayTime = 0;
             AvgExecutionTime = 0;
         }
-        public async void SummingUp(string? userId, AppDbContext context)
+        public void SummingUp(string? userId, AppDbContext context)
         {
             TasksCount = context.TodoTasks
                 .Where(t => t.IsCompleted == true && t.UserId == userId)
@@ -52,7 +50,7 @@ namespace ToDo.Models
                 .Count();
             TimelyCompletedTasksCount = TasksCount - OverdueTasksCount;
         }
-        private async void SetExecutionTime(string? userId, AppDbContext context)
+        private void SetExecutionTime(string? userId, AppDbContext context)
         {
             var group = context.TodoTasks.Where(t => t.CompletedAt < t.Deadline && t.UserId == userId && t.IsCompleted == true);
 
@@ -63,7 +61,7 @@ namespace ToDo.Models
 
             AvgExecutionTime = averageExecutionTime;
         }
-        private async void SetDelayTime(string? userId, AppDbContext context)
+        private void SetDelayTime(string? userId, AppDbContext context)
         { 
             var group1 = context.TodoTasks.Where(t => t.CompletedAt >= t.Deadline && t.UserId == userId && t.IsCompleted == true);
 

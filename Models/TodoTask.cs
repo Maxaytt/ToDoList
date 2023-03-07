@@ -9,7 +9,6 @@ namespace ToDo.Models
         public int Id { get; set; }
         public string? UserId { get; set; }
         public int? CategoryId { get; set; }
-        public TaskCategory? Category { get; set; }
         [Required]
         public string Description { get; set; }
         [Range(1,10)]

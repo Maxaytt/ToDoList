@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Drawing.Printing;
 using System.Security.Claims;
 using ToDo.Models;
-
+using TodoList.Models.SelectListViewModels;
 
 namespace ToDo.Controllers
 {
@@ -64,6 +65,19 @@ namespace ToDo.Controllers
         //GET: TodoTasks/Create
         public IActionResult Create()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var categories = _context.TaskCategories.Where(c => c.UserId == userId).ToList();
+
+            var selectListItems = categories.Select(c => new CategorySelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name,
+                Color = c.Color,
+                Selected = false
+            }).ToList();
+
+            ViewBag.Categories = selectListItems;
+
             return View();
         }
 
@@ -71,9 +85,11 @@ namespace ToDo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TodoTask task)
         {
+
             if (ModelState.IsValid)
             {
-                task.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                task.UserId = userId;
 
                 task.CreatedAt = DateTime.Now;
                 _context.Add(task);

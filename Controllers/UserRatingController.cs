@@ -16,12 +16,12 @@ public class UserRatingController : Controller
         _userManager = userManager;
     }
 
-    public async Task<IActionResult> Index()
+   /* public async Task<IActionResult> Index()
     {
         var userRatings = await _context.UserRatings.OrderByDescending(ur => ur.TaskCompletedCount).ToListAsync();
         return View(userRatings);
     }
-
+   */
     public async Task<IActionResult> Update(string userId)
     {
         var userRating = await _context.UserRatings.FirstOrDefaultAsync(ur => ur.UserId == userId);
@@ -30,14 +30,12 @@ public class UserRatingController : Controller
             userRating = new UserRating
             {
                 UserId = userId,
-                TaskCompletedCount = 1,
                 TotalPoints = points
             };
             _context.UserRatings.Add(userRating);
         }
         else
         {
-            userRating.TaskCompletedCount++;
             userRating.TotalPoints += points;
             _context.UserRatings.Update(userRating);
         }

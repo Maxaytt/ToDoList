@@ -7,7 +7,7 @@
         <tr>
             <th>Rank</th>
             <th>User</th>
-            <th>Task Completed Count</th>
+            <th>Total Points</th>
         </tr>
     </thead>
     <tbody>
@@ -16,7 +16,7 @@
             <tr>
                 <td>@(Model.ToList().IndexOf(userRating) + 1)</td>
                 <td>@userRating.UserId</td>
-                <td>@userRating.TaskCompletedCount</td>
+                <td>@userRating.TotalPoints</td>
             </tr>
         }
     </tbody>
